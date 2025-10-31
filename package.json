@@ -1,0 +1,17 @@
+{
+  "name": "app_blue",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "enqueue:all": "node src/enqueueAll.js",
+    "worker": "node src/worker.js"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.5.0",
+    "fs-extra": "^11.3.0",
+    "moment-timezone": "^0.6.0",
+    "mysql2": "^3.14.1"
+  }
+}
