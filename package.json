@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "start": "node -e \"console.log('app_blue ready for cron')\"",
     "enqueue:all": "node src/enqueueAll.js",
     "worker": "node src/worker.js"
   },
