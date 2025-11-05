@@ -59,6 +59,7 @@ async function runJob() {
             ...(cursor && { cursor }),
           },
           headers: { Authorization: `Bearer ${token}` },
+          timeout: 60000, // ⏱ evita cuelgues por lentitud de red
         }
       );
 
@@ -108,4 +109,16 @@ async function runJob() {
   console.log("\n🎯 Job completed.");
 }
 
-runJob();
+// 🧹 Manejo de ejecución controlada
+(async () => {
+  try {
+    await runJob();
+    console.log("🎯 Proceso completado correctamente");
+  } catch (err) {
+    console.error("❌ Error durante la ejecución:", err);
+  } finally {
+    console.log("🧹 Cerrando conexión MySQL...");
+    await pool.end(); // Cierra la conexión MySQL
+    process.exit(0);  // Finaliza el proceso correctamente
+  }
+})();
