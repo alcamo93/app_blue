@@ -1,0 +1,39 @@
+name: Ejecutar app_blue diariamente
+
+on:
+  schedule:
+    - cron: "0 11 * * *"  # ⏰ 05:00 AM hora México (UTC-6)
+  workflow_dispatch:       # permite ejecutarlo manualmente desde GitHub Actions
+
+jobs:
+  run-blue-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: 🧰 Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Instalar dependencias
+        run: npm install
+
+      - name: 🚀 Ejecutar script de BlueMessaging
+        run: node src/jobs/projectWorker.js
+        env:
+          # ⚙️ Variables de conexión a la base de datos Railway
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+
+          # ⚙️ Zona horaria local
+          TIMEZONE: America/Mexico_City
+
+          # 🔐 Credenciales BlueMessaging
+          BM_USERNAME: ${{ secrets.BM_USERNAME }}
+          BM_PASSWORD: ${{ secrets.BM_PASSWORD }}
