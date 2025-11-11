@@ -2,38 +2,38 @@ name: Ejecutar app_blue diariamente
 
 on:
   schedule:
-    - cron: "0 11 * * *"  # ⏰ 05:00 AM hora México (UTC-6)
-  workflow_dispatch:       # permite ejecutarlo manualmente desde GitHub Actions
+    - cron: '0 11 * * *'  # 5:00 am hora de CDMX (UTC+6)
+  workflow_dispatch:
 
 jobs:
   run-blue-job:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - name: 📦 Checkout del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: 🧰 Configurar Node.js
-        uses: actions/setup-node@v4
+      - name: ⚙️ Configurar Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
       - name: 📦 Instalar dependencias
-        run: npm install
+        run: npm ci
+
+      - name: 🧩 Configurar variables de entorno
+        run: |
+          echo "BM_USERNAME=${{ secrets.BM_USERNAME }}" >> .env
+          echo "BM_PASSWORD=${{ secrets.BM_PASSWORD }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "TIMEZONE=${{ secrets.TIMEZONE }}" >> .env
 
       - name: 🚀 Ejecutar script de BlueMessaging
-        run: node src/jobs/projectWorker.js
-        env:
-          # ⚙️ Variables de conexión a la base de datos Railway
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASS: ${{ secrets.DB_PASS }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_PORT: ${{ secrets.DB_PORT }}
+        run: |
+          node src/jobs/projectWorker.js
 
-          # ⚙️ Zona horaria local
-          TIMEZONE: America/Mexico_City
-
-          # 🔐 Credenciales BlueMessaging
-          BM_USERNAME: ${{ secrets.BM_USERNAME }}
-          BM_PASSWORD: ${{ secrets.BM_PASSWORD }}
