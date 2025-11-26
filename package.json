@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node -e \"console.log('app_blue ready for cron')\"",
     "enqueue:all": "node src/enqueueAll.js",
-    "worker": "node src/worker.js"
+    "worker": "node src/worker.js",
+    "start:scheduler": "node src/scheduler.js"
   },
   "dependencies": {
     "axios": "^1.9.0",
@@ -13,6 +14,7 @@
     "dotenv": "^16.5.0",
     "fs-extra": "^11.3.0",
     "moment-timezone": "^0.6.0",
-    "mysql2": "^3.14.1"
+    "mysql2": "^3.14.1",
+    "node-cron": "^3.0.0"
   }
 }

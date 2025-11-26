@@ -39,7 +39,7 @@ function generateDailyRange(daysAgo = 1) {
 }
 
 // 🚀 Ejecuta la sincronización directamente
-async function runJob() {
+export async function runJob() {
   const templates = await getActiveTemplates();
   const token = await getAccessToken();
 
@@ -109,16 +109,25 @@ async function runJob() {
   console.log("\n🎯 Job completed.");
 }
 
-// 🧹 Manejo de ejecución controlada
-(async () => {
-  try {
-    await runJob();
-    console.log("🎯 Proceso completado correctamente");
-  } catch (err) {
-    console.error("❌ Error durante la ejecución:", err);
-  } finally {
-    console.log("🧹 Cerrando conexión MySQL...");
-    await pool.end(); // Cierra la conexión MySQL
-    process.exit(0);  // Finaliza el proceso correctamente
-  }
-})();
+// 🔌 Exportar función para cerrar conexión
+export async function closePool() {
+  console.log("🧹 Cerrando conexión MySQL...");
+  await pool.end();
+}
+
+// 🧹 Manejo de ejecución controlada (solo cuando se ejecuta directamente)
+const isMainModule = import.meta.url === `file://${process.argv[1]}`;
+
+if (isMainModule) {
+  (async () => {
+    try {
+      await runJob();
+      console.log("🎯 Proceso completado correctamente");
+    } catch (err) {
+      console.error("❌ Error durante la ejecución:", err);
+    } finally {
+      await closePool();
+      process.exit(0);
+    }
+  })();
+}
