@@ -3,7 +3,8 @@ import cron from "node-cron";
 import { runJob, closePool } from "./jobs/projectWorker.js";
 
 const TIMEZONE = "America/Mexico_City";
-const CRON_EXPRESSION = "0 5 * * *"; // 5:00 AM todos los días
+//const CRON_EXPRESSION = "0 5 * * *"; // 5:00 AM todos los días
+const CRON_EXPRESSION = "50 15 * * *"; // Temporal para prueba: 3:50 PM
 
 console.log("🚀 Scheduler iniciado");
 console.log(`⏰ Configurado para ejecutar a las 5:00 AM (${TIMEZONE})`);
