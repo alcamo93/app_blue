@@ -27,15 +27,24 @@ async function getActiveTemplates() {
   return rows;
 }
 
-// 🕐 Rango de fechas con margen ±6h
+// 🕐 Rango de fechas con margen -6h en from, y to limitado al momento actual
 function generateDailyRange(daysAgo = 1) {
   const tz = process.env.TIMEZONE || "America/Mexico_City";
-  const startLocal = moment.tz(tz).subtract(daysAgo, "days").startOf("day");
+  const now = moment.tz(tz);
+  const startLocal = now.clone().subtract(daysAgo, "days").startOf("day");
   const endLocal = startLocal.clone().endOf("day");
-  return {
-    from: startLocal.clone().subtract(6, "hours").utc().format("YYYY-MM-DDTHH:mm:ss[Z]"),
-    to: endLocal.clone().add(6, "hours").utc().format("YYYY-MM-DDTHH:mm:ss[Z]"),
-  };
+  
+  // Calcular el 'to' deseado (fin del día + 6h margen)
+  const toDesired = endLocal.clone().add(6, "hours");
+  // Limitar 'to' al momento actual para evitar fechas futuras que la API rechaza
+  const toFinal = moment.min(toDesired, now);
+
+  const from = startLocal.clone().subtract(6, "hours").utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+  const to = toFinal.utc().format("YYYY-MM-DDTHH:mm:ss[Z]");
+
+  console.log(`📅 Rango de fechas: from=${from}, to=${to}`);
+  
+  return { from, to };
 }
 
 // 🚀 Ejecuta la sincronización directamente
