@@ -1,8 +1,8 @@
 // src/lib/auth.js
+import "../config/env.js";
+
 import axios from "axios";
-import dotenv from "dotenv";
 import { URLSearchParams } from "url";
-dotenv.config();
 
 let token = null;
 let expiry = 0;
