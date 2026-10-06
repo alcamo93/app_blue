@@ -6,7 +6,7 @@ on:
       from_date:
         description: 'Fecha inicial (YYYY-MM-DD)'
         required: true
-        default: '2026-09-28'
+        default: '2026-08-01'
         type: string
       to_date:
         description: 'Fecha final (YYYY-MM-DD)'
@@ -47,7 +47,7 @@ jobs:
           FROM_DATE: ${{ inputs.from_date }}
           TO_DATE: ${{ inputs.to_date }}
         run: |
-          MIN_DATE="2026-09-28"
+          MIN_DATE="2026-08-01"
           YESTERDAY_MX="$(TZ=America/Mexico_City date -d 'yesterday' +%F)"
 
           if ! [[ "$FROM_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] \
