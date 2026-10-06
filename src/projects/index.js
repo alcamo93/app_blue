@@ -3,10 +3,12 @@
 
 import { project20532 } from "./project20532.js";
 import { project20920 } from "./project20920.js";
+import { project20949 } from "./project20949.js";
 
 const projectsByTemplateId = new Map([
   [project20532.templateId, project20532],
   [project20920.templateId, project20920],
+  [project20949.templateId, project20949],
 ]);
 
 /**

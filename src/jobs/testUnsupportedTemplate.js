@@ -55,6 +55,7 @@ async function main() {
 
     assert(registered.includes(20532), "20532 debe estar registrado");
     assert(registered.includes(20920), "20920 debe estar registrado en código");
+    assert(registered.includes(20949), "20949 debe estar registrado en código");
     assert(
       !registered.includes(UNSUPPORTED_TEMPLATE_ID),
       "99999 NO debe estar registrado"
@@ -63,6 +64,10 @@ async function main() {
     assert(
       getProject(20920)?.tableName === "blue_data_20920",
       "getProject(20920) debe devolver el proyecto 20920"
+    );
+    assert(
+      getProject(20949)?.tableName === "blue_data_20949",
+      "getProject(20949) debe devolver el proyecto 20949"
     );
     assert(
       getProject(FAKE_TEMPLATE_ID) === null,
@@ -84,6 +89,10 @@ async function main() {
     assert(
       resolveOrSkip(20920).skipped === false,
       "20920 registrado no debe omitirse por registry"
+    );
+    assert(
+      resolveOrSkip(20949).skipped === false,
+      "20949 registrado no debe omitirse por registry"
     );
     assert(resolveOrSkip(FAKE_TEMPLATE_ID).skipped, "99999 debe omitirse");
 
